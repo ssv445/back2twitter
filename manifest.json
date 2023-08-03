@@ -25,5 +25,5 @@
    "name": "Back 2 Twitter",
    "short_name": "Back2Twitter",
    "update_url": "https://clients2.google.com/service/update2/crx",
-   "version": "1.0.0"
+   "version": "1.0.1"
 }

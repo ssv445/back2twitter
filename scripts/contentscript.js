@@ -9,13 +9,11 @@ function back2Twitter()
     //track how many times, we have run in the current page
     b2TCounter++;
 
-    // console.log('b2T:Executing b2T');
-
     //favicon
     try{
         document.querySelector('[rel="shortcut icon"]').href = 'https://abs.twimg.com/favicons/twitter.2.ico';
     }catch(e){
-        console.log('b2T: Applying Favicon : Error',e);
+        // console.log('b2T: Applying Favicon : Error',e);
         delayBack2Twitter();
     }
 
@@ -24,38 +22,43 @@ function back2Twitter()
         //Using Regex to replace X in End
         document.title = document.title.replace(/X$/, 'Twitter');
     } catch (e) {
-        console.log('b2T: Applying Title : Error', e);
+        // console.log('b2T: Applying Title : Error', e);
         delayBack2Twitter();
     }
 
     //logo
     try{
-        document.querySelector('[href="/home"][aria-label="Twitter"][role="link"] svg').outerHTML = twitterSvg;    //a 
+        document.querySelector('[href="/home"][aria-label="Twitter"][role="link"] svg').outerHTML = twitterSvg;  
     } catch (e) {
-        console.log('b2T: Applying Logo : Error', e);
+        // console.log('b2T: Applying Logo : Error', e);
         delayBack2Twitter();
     }
 
     // find the spans with text=Post and replace text to=Tweet
     try {
+        let elem = null;
         do{
-            let elem = getElementByXpath("//span[text()='Post']");
+            elem = getElementByXpath("//span[text()='Post']");
             if (elem) { 
                 elem.innerHTML = 'Tweet' 
             };
-        }while(elem);
+        } while (elem);
     } catch (e) {
-        console.log('b2T: Applying Twitter : Error', e);
+        // console.log('b2T: Applying Twitter : Error', e);
         delayBack2Twitter();
     }
 }
 
 // delay the rebranding and attempt after few ms.
 var b2tTimeout = null;
-function delayBack2Twitter(){
-    //expire after 10 attempts
-    if (b2TCounter > 10){
-        console.log('b2TCounter exceeding 10');
+function delayBack2Twitter(resetCounter=false){
+    if (resetCounter){
+        // console.log('b2TCounter Resetting to 0');
+        b2TCounter = 0;
+    }
+    //expire after 20 attempts
+    if (b2TCounter > 20){
+        console.log('b2TCounter exceeding 20, rebranding failed. Reload the page to retry.');
         return;
     }
     //remove existing timeout
@@ -68,7 +71,6 @@ function delayBack2Twitter(){
 
 // did the page is still loading or completely loaded
 if(document.readyState === "loading") {
-    // console.log('b2T:Added Event Listner')
     document.addEventListener("DOMContentLoaded", back2Twitter);
 }else{
     back2Twitter();
@@ -78,7 +80,8 @@ if(document.readyState === "loading") {
 var b2TUrl = location.href;
 document.body.addEventListener('click', () => {
     requestAnimationFrame(() => {
-        b2TUrl !== location.href && delayBack2Twitter();
+        //also reset the counter, so we can try it multiple times on different pages
+        b2TUrl !== location.href && delayBack2Twitter(true);
         b2TUrl = location.href;
     });
 }, true);

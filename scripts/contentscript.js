@@ -6,6 +6,7 @@ const twitterSvg = '<svg viewBox="0 0 24 24" aria-hidden="true" class="r-1cvl2hr
 var b2TCounter =0;
 function back2Twitter()
 {
+    //track how many times, we have run in the current page
     b2TCounter++;
 
     console.log('b2T:Executing b2T');
@@ -35,7 +36,7 @@ function back2Twitter()
         delayBack2Twitter();
     }
 
-    //Post to Tweet
+    // find the spans with text=Post and replace text to=Tweet
     try {
         do{
             let elem =getElementByXpath("//span[text()='Post']");
@@ -43,23 +44,13 @@ function back2Twitter()
                 elem.innerHTML = 'Tweet' 
             };
         }while(elem);
-        // //left menu
-        // let elem = document.querySelector('[aria-label="Post"][role="link"]');
-        // elem.innerHTML = elem.innerHTML.replace('>Post</', '>Tweet</');
-
-        // // inline
-        // let elem2 = document.querySelector('[data-testid="tweetButtonInline"]');
-        // elem2.innerHTML = elem2.innerHTML.replace('>Post</', '>Tweet</');
-
     } catch (e) {
-        console.log('b2T: Applying Logo : Error', e);
+        console.log('b2T: Applying Twitter : Error', e);
         delayBack2Twitter();
     }
-
-
 }
 
-
+// delay the rebranding and attempt after few ms.
 var b2tTimeout = null;
 function delayBack2Twitter(){
     //expire after 10 attempts
@@ -75,6 +66,7 @@ function delayBack2Twitter(){
     b2tTimeout = setTimeout(back2Twitter, 200 /* ms */)
 }
 
+// did the page is still loading or completely loaded
 if(document.readyState === "loading") {
     console.log('b2T:Added Event Listner')
     document.addEventListener("DOMContentLoaded", back2Twitter);
@@ -82,7 +74,7 @@ if(document.readyState === "loading") {
     back2Twitter();
 }
 
-//detectUrlChange
+// Detect Url Change without a page reload
 var b2TUrl = location.href;
 document.body.addEventListener('click', () => {
     requestAnimationFrame(() => {
@@ -92,5 +84,5 @@ document.body.addEventListener('click', () => {
 }, true);
 
 
-//on doc resize
+// rebrand when the page size changes
 addEventListener("resize",  back2Twitter);

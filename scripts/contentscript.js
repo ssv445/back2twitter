@@ -9,7 +9,7 @@ function back2Twitter()
     //track how many times, we have run in the current page
     b2TCounter++;
 
-    console.log('b2T:Executing b2T');
+    // console.log('b2T:Executing b2T');
 
     //favicon
     try{
@@ -39,7 +39,7 @@ function back2Twitter()
     // find the spans with text=Post and replace text to=Tweet
     try {
         do{
-            let elem =getElementByXpath("//span[text()='Post']");
+            let elem = getElementByXpath("//span[text()='Post']");
             if (elem) { 
                 elem.innerHTML = 'Tweet' 
             };
@@ -68,7 +68,7 @@ function delayBack2Twitter(){
 
 // did the page is still loading or completely loaded
 if(document.readyState === "loading") {
-    console.log('b2T:Added Event Listner')
+    // console.log('b2T:Added Event Listner')
     document.addEventListener("DOMContentLoaded", back2Twitter);
 }else{
     back2Twitter();
